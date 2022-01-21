@@ -2,11 +2,16 @@ package com.example.buzzz
 
 
 
+import android.app.ProgressDialog
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import com.example.buzzz.databinding.ActivitySigninBinding
 import com.google.firebase.FirebaseApp
@@ -33,8 +38,18 @@ class Signin : AppCompatActivity() {
     private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
     private lateinit var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
 
+    private lateinit var progressDialog: ProgressDialog
+    private lateinit var mCounter: CountDownTimer
+
     private lateinit var countrycode: String
     private lateinit var phoneNumber: String
+
+    val otp by lazy {
+        findViewById<EditText>(R.id.otp)
+    }
+    val counterTv by lazy {
+        findViewById<TextView>(R.id.counterTv)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +70,11 @@ class Signin : AppCompatActivity() {
             startPhoneNumberVerification(phoneNumber)
         }
         button_verifyotp.setOnClickListener{
-            verifyPhoneNumberWithCode(storedVerificationId, binding.otp.text.toString())
+            verifyPhoneNumberWithCode(storedVerificationId!!,otp.text.toString())
+        }
+        button_resendotp.setOnClickListener{
+            checkNumber()
+            startPhoneNumberVerification(phoneNumber)
         }
 
         auth = Firebase.auth
@@ -70,7 +89,7 @@ class Signin : AppCompatActivity() {
                 //     detect the incoming verification SMS and perform verification without
                 //     user action.
                 Log.d(TAG, "onVerificationCompleted:$credential")
-                Toast.makeText(applicationContext,"Welcome to BUZZZ..",Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext,"Welcome to BUZZZ...",Toast.LENGTH_SHORT).show()
                 signInWithPhoneAuthCredential(credential)
             }
 
@@ -80,9 +99,10 @@ class Signin : AppCompatActivity() {
                 Log.w(TAG, "onVerificationFailed", e)
 
                 if (e is FirebaseAuthInvalidCredentialsException) {
-                    Toast.makeText(applicationContext,"$phoneNumber",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext,"Not A Valid Phone Number...",Toast.LENGTH_SHORT).show()
                 } else if (e is FirebaseTooManyRequestsException) {
                     // The SMS quota for the project has been exceeded
+                    Log.w(TAG, "sms quota exceeded", e)
                 }
 
                 // Show a message and update the UI
@@ -96,16 +116,35 @@ class Signin : AppCompatActivity() {
                 // now need to ask the user to enter the code and then construct a credential
                 // by combining the code with a verification ID.
                 Log.d(TAG, "onCodeSent:$verificationId")
-                Toast.makeText(applicationContext,"Otp Sent..",Toast.LENGTH_SHORT).show()
-
+                Toast.makeText(applicationContext,"Otp Sent...",Toast.LENGTH_SHORT).show()
                 // Save verification ID and resending token so we can use them later
                 storedVerificationId = verificationId
                 resendToken = token
+
+                startCounter(60000)
+
             }
         }
     }
 
-        override fun onStart() {
+    private fun startCounter(time: Long) {
+        button_resendotp.isEnabled = false
+        counterTv.isVisible = true
+        mCounter = object : CountDownTimer(time, 1000) {
+            override fun onFinish() {
+                button_resendotp.isEnabled = true
+                counterTv.isVisible = false
+            }
+
+            override fun onTick(timeLeft: Long) {
+
+                counterTv.text = "Seconds Remaining : " + timeLeft / 1000
+            }
+
+        }.start()
+    }
+
+    override fun onStart() {
             super.onStart()
             val currentUser=auth.currentUser
             updateUI(currentUser)
@@ -135,6 +174,7 @@ class Signin : AppCompatActivity() {
         private fun verifyPhoneNumberWithCode(verificationId: String?, code: String) {
             // [START verify_with_code]
             val credential = PhoneAuthProvider.getCredential(verificationId!!, code)
+            signInWithPhoneAuthCredential(credential)
             // [END verify_with_code]
         }
         // [START sign_in_with_phone]
@@ -142,15 +182,22 @@ class Signin : AppCompatActivity() {
             auth.signInWithCredential(credential)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
+                        if(task.result?.additionalUserInfo?.isNewUser == true){
+                            Log.d(TAG, "signInWithCredential:success")
+                            Toast.makeText(applicationContext,"Welcome to BUZZZ...",Toast.LENGTH_SHORT).show()
+                            showProfileActivity()
+                            val user = task.result?.user
+                        }else{
+                            Log.d(TAG, "signInWithCredential:success")
+                            Toast.makeText(applicationContext,"Welcome back..",Toast.LENGTH_SHORT).show()
+                            showChatActivity()
+                            val user = task.result?.user
+                        }
                         // Sign in success, update UI with the signed-in user's information
-                        Log.d(TAG, "signInWithCredential:success")
-                        Toast.makeText(applicationContext,"Sign in successful..",Toast.LENGTH_SHORT).show()
-
-                        val user = task.result?.user
                     } else {
                         // Sign in failed, display a message and update the UI
                         Log.w(TAG, "signInWithCredential:failure", task.exception)
-                        Toast.makeText(applicationContext,"Some error occured ,try again..",Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(applicationContext,"Some error occured ,try again..",Toast.LENGTH_SHORT).show()
                         if (task.exception is FirebaseAuthInvalidCredentialsException) {
                             // The verification code entered was invalid
                             Toast.makeText(applicationContext,"The verification code entered was invalid..",Toast.LENGTH_SHORT).show()
@@ -159,11 +206,23 @@ class Signin : AppCompatActivity() {
                     }
                 }
         }
-        // [END sign_in_with_phone]
+// start chat activity for existing users
+    private fun showChatActivity() {
+        val intent = Intent(this,Chat::class.java)
+        startActivity(intent)
+    }
+
+  // profile setup activity for new users
+    private fun showProfileActivity() {
+      val intent = Intent(this,Profile::class.java)
+      startActivity(intent)
+    }
+
+    // [END sign_in_with_phone]
 
 
 
     companion object {
-        private const val TAG = "PhoneAuthActivity"
+        private const val TAG = "Signin"
     }
 }

@@ -9,17 +9,17 @@
     android:background="@color/grayBackground"
     tools:context=".Signin">
 
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
-        android:textAlignment="center"
-        android:text="Welcome to BUZZZ..."
         android:padding="20dp"
+        android:text="Welcome to BUZZZ..."
+        android:textAlignment="center"
         android:textColor="@color/red"
         android:textSize="28sp"
         android:textStyle="bold" />
-
 
     <TextView
         android:layout_width="wrap_content"
@@ -126,36 +126,46 @@
         app:cornerRadius="5dp" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="20dp"
         android:gravity="center"
         android:orientation="horizontal">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:text="Didn't receive the OTP: -"
-        android:textColor="#515151"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="Didn't receive the OTP: -"
+            android:textColor="#515151"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_resendotp"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_resendotp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@color/red"
+            android:enabled="true"
+            android:text="RESEND..."
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            app:backgroundTint="@color/red"
+            app:cornerRadius="10dp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/counterTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:background="@color/red"
-        android:enabled="true"
-        android:text="RESEND OTP"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:backgroundTint="@color/grayBackground"
-        app:cornerRadius="10dp" />
-    </LinearLayout>
+        android:gravity="center"
+        android:padding="6dp"
+        android:textSize="16sp" />
 </LinearLayout>
