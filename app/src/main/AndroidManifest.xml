@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Buzzz">
         <activity
+            android:name=".Bio"
+            android:exported="false" />
+        <activity
             android:name=".Profile"
             android:exported="false" />
         <activity
