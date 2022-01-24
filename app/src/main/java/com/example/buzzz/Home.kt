@@ -23,7 +23,7 @@ class Home : AppCompatActivity() {
 
 //        var button_continue = findViewById(R.id.button_continue)
 
-        button_continue.setOnClickListener{
+        button_continuetobuzzz.setOnClickListener{
             val intent = Intent(this, Signin::class.java)
             startActivity(intent)
         }

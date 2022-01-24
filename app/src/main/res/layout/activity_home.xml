@@ -37,7 +37,7 @@
         app:srcCompat="@drawable/logo" />
 
     <Button
-        android:id="@+id/button_continue"
+        android:id="@+id/button_continuetobuzzz"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/red"
