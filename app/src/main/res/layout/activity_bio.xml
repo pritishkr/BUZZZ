@@ -14,6 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:textColor="#515151"
         android:layout_marginTop="100dp"
         android:text="Type in your Bio: -"
         android:textSize="26dp"
@@ -25,6 +26,7 @@
         android:layout_height="wrap_content"
         android:textSize="16dp"
         android:layout_gravity="center"
+        android:textColor="#515151"
         android:text="(Not more than 150words...)" />
 
     <EditText

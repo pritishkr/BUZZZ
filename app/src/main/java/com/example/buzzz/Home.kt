@@ -21,9 +21,8 @@ class Home : AppCompatActivity() {
 
         supportActionBar?.hide()
 
-//        var button_continue = findViewById(R.id.button_continue)
 
-        button_continuetobuzzz.setOnClickListener{
+        button_continue.setOnClickListener{
             val intent = Intent(this, Signin::class.java)
             startActivity(intent)
         }
