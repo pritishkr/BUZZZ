@@ -9,6 +9,13 @@
     android:background="@color/grayBackground"
     tools:context=".Profile">
 
+    <Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/red"
+        android:title="BUZZZ..."
+        android:titleTextColor="@color/white" />
+
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
@@ -52,6 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:textColor="@color/black"
             android:inputType="textPersonName" />
 
     </LinearLayout>

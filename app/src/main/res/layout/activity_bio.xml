@@ -9,6 +9,13 @@
     android:background="@color/grayBackground"
     tools:context=".Bio">
 
+    <Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/red"
+        android:title="BUZZZ..."
+        android:titleTextColor="@color/white" />
+
     <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
