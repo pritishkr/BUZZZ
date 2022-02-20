@@ -32,14 +32,14 @@ class Bio : AppCompatActivity() {
             {
                 Toast.makeText(applicationContext,"No Bio added...", Toast.LENGTH_SHORT).show()
                 Toast.makeText(applicationContext,"Welcome to BUZZZ...",Toast.LENGTH_SHORT).show()
-                val intent = Intent(this,Newuser_groups::class.java)
+                val intent = Intent(this,Chat::class.java)
                 startActivity(intent)
             }
             else{
 //                database.collection("users").document(auth.uid!!).set(bioet.text.toString())
                 Toast.makeText(applicationContext,"Bio added...",Toast.LENGTH_SHORT).show()
                 Toast.makeText(applicationContext,"Welcome to BUZZZ...",Toast.LENGTH_SHORT).show()
-                val intent = Intent(this,Newuser_groups::class.java)
+                val intent = Intent(this,Chat::class.java)
                 startActivity(intent)
             }
         }
