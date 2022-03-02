@@ -16,7 +16,6 @@
         android:theme="@style/Theme.Buzzz">
         <activity
             android:name=".splash"
-            android:theme="@style/splashtheme"
             android:exported="true" >
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
